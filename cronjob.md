@@ -50,7 +50,7 @@ oc describe job <job-name>
 deleting crob job:
 ==================
 ```
-oc delete cronjob python-script-cron -n zfw-jenkins-zfab-app
+oc delete cronjob python-script-cron -n vijay
 
 oc get jobs -n vijay
 ```
