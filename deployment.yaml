@@ -1,0 +1,86 @@
+apiVersion: v1
+items:
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: webserver
+      app.kubernetes.io/component: webserver
+      app.kubernetes.io/instance: webserver
+    name: webserver
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - annotations:
+        openshift.io/imported-from: nginxinc/nginx-unprivileged
+      from:
+        kind: DockerImage
+        name: nginxinc/nginx-unprivileged
+      generation: null
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: ""
+  status:
+    dockerImageRepository: ""
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"webserver:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"webserver\")].image"}]'
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: webserver
+      app.kubernetes.io/component: webserver
+      app.kubernetes.io/instance: webserver
+    name: webserver
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        deployment: webserver
+    strategy: {}
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          deployment: webserver
+      spec:
+        containers:
+        - image: ' '
+          name: webserver
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+  status: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: webserver
+      app.kubernetes.io/component: webserver
+      app.kubernetes.io/instance: webserver
+    name: webserver
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      deployment: webserver
+  status:
+    loadBalancer: {}
+kind: List
+metadata: {}
