@@ -40,3 +40,13 @@ pipeline {
 }
 
 // https://youtu.be/xk8Fs200hLA?si=rxoVccN4kGPTqLXR
+
+#here, jenkins will connect as a service account token, it wont connect to ocp via normal user
+#it is not industry practice to connect to ocp via normal user from jenkins
+#provifing admin privileges to service account
+oc create sa jenkins-user
+oc policy add-role-to-user admin -z jenkins-user -n devops-pipeline     -> provide admin privileges to service account/user 
+oc describe sa jenkins-user   -> u will get token 
+
+
+
